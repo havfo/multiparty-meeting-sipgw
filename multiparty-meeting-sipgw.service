@@ -1,0 +1,15 @@
+[Unit]
+Description=multiparty-meeting-sipgw is a SIP gateway for multiparty-meeting
+After=network.target
+
+[Service]
+ExecStart=/usr/local/src/multiparty-meeting-sipgw/server.js
+Restart=always
+User=nobody
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/usr/local/src/multiparty-meeting-sipgw
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target

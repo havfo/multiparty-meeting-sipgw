@@ -1,6 +1,73 @@
 # multiparty-meeting-sipgw
-Multiparty-meeting SIP gateway using Kurento
 
-Todo: add documentation
+A SIP gateway for [multiparty-meeting](https://github.com/havfo/multiparty-meeting)
 
-Try it by calling: roomId@letsmeet.no
+Try it by calling: `roomname@letsmeet.no`
+
+This will make you join the other participants at: `https://letsmeet.no/roomname`
+
+## Installation
+
+To run this gateway you will need several external components, install them according to their installation guides and your local requirements:
+* [multiparty-meeting](https://github.com/havfo/multiparty-meeting)
+* [drachtio-server](https://github.com/davehorton/drachtio-server)
+* [Kurento server](https://doc-kurento.readthedocs.io/en/stable/user/installation.html)
+
+
+Clone this project:
+
+```bash
+$ git clone https://github.com/havfo/multiparty-meeting-sipgw.git
+$ cd multiparty-meeting-sipgw
+```
+
+Edit `config/default.json` with appropriate settings.
+
+Install node modules:
+
+```bash
+$ npm install
+```
+
+## Run it
+
+Run the Node.js server application in a terminal:
+
+```bash
+$ npm start
+```
+
+You can test it by calling: `roomname@yourdrachtioconfiguredsipdomain.com`
+
+## Deploy it in a server
+
+Stop your locally running server. Copy systemd-service file `multiparty-meeting-sipgw.service` to `/etc/systemd/system/` and check location path settings:
+
+```bash
+$ cp multiparty-meeting-sipgw.service /etc/systemd/system/
+$ edit /etc/systemd/system/multiparty-meeting-sipgw.service
+```
+
+Reload SystemD configuration and start service:
+
+```bash
+$ systemctl daemon-reload
+$ systemctl start multiparty-meeting-sipgw
+```
+
+If you want to start multiparty-meeting-sipgw at boot time:
+
+```bash
+$ systemctl enable multiparty-meeting-sipgw
+```
+
+## Author
+
+* Håvar Aambø Fosstveit
+
+
+## License
+
+MIT
+
+
