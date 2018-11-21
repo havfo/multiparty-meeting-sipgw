@@ -10,18 +10,6 @@ const logger = new Logger();
 // Drachtio connection
 const srf = new Srf();
 
-// Room instances
-const rooms = {};
-
-let idCounter = 0;
-
-function nextUniqueId()
-{
-	idCounter++;
-
-	return idCounter.toString();
-}
-
 srf.connect(srfConfig);
 
 srf.on('connect', (err, hostport) =>
@@ -49,13 +37,10 @@ srf.invite((req, res) =>
 
 				const room = new Room(roomName, srf);
 
-				const roomId = nextUniqueId();
-
-				rooms[roomId] = room;
-
 				room.on('close', () =>
 				{
-					delete rooms[roomId];
+					logger.debug(
+						'close() [roomName:"%s"]', roomName);
 				});
 
 				room.handleCall(req, res);
