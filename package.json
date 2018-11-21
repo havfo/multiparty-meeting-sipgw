@@ -1,0 +1,30 @@
+{
+	"name": "multiparty-meeting-sipgw",
+	"version": "0.0.1",
+	"description": "multiparty-meeting SIP gateway",
+	"author": "Håvar Aambø Fosstveit <h@fosstveit.net>",
+	"contributors": [],
+	"homepage": "https://letsmeet.no",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/havfo/multiparty-meeting-sipgw.git"
+	},
+	"scripts": {
+		"lint": "eslint -c .eslintrc.js ."
+	},
+	"main": "server.js",
+	"dependencies": {
+		"config": "^2.0.1",
+		"drachtio-srf": "^4.4.0",
+		"kurento-client": "https://github.com/Kurento/kurento-client-js#master",
+		"mediasoup-client": "^2.4.0",
+		"node-mediastreamtrack": "0.0.1",
+		"random-string": "^0.2.0",
+		"sdp-transform": "^2.6.0",
+		"socket.io-client": "^1.7.4"
+	},
+	"devDependencies": {
+		"eslint": "^5.9.0"
+	}
+}

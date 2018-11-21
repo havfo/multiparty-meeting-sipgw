@@ -1,0 +1,30 @@
+{
+	"Srf": {
+		"host"   : "127.0.0.1",
+		"port"   : 9022,
+		"secret" : "cymru"
+	},
+	"Kurento": {
+		"uri": "ws://127.0.0.1:8888/kurento"
+	},
+	"Mediasoup": {
+		"turnServers": [
+			{
+				"urls" : [
+					"turn:turn.example.com:443?transport=tcp"
+				],
+				"username"   : "example",
+				"credential" : "example"
+			}
+		],
+		"requestTimeout"   : 10000,
+		"transportOptions" :
+		{
+			"tcp" : false
+		}
+	},
+	"Room": {
+		"socketUrl"     : "https://127.0.0.1:4443",
+		"maxSpotlights" : 1
+	}
+}
