@@ -1,3 +1,9 @@
+#!/usr/bin/env node
+
+'use strict';
+
+process.title = 'multiparty-meeting-sipgw';
+
 const config = require('config');
 const Srf = require('drachtio-srf');
 const Logger = require('./lib/Logger');
