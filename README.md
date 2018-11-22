@@ -6,6 +6,9 @@ Try it by calling: `roomname@letsmeet.no`
 
 This will make you join the other participants at: `https://letsmeet.no/roomname`
 
+## Architecture
+![multiparty-meeting-sipgw architecture](https://raw.githubusercontent.com/havfo/multiparty-meeting-sipgw/master/doc/multiparty-meeting-sipgw.png "multiparty-meeting-sipgw architecture")
+
 ## Installation
 
 To run this gateway you will need several external components, install them according to their installation guides and your local requirements:
