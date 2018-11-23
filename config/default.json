@@ -26,5 +26,10 @@
 	"Room": {
 		"socketUrl"     : "https://127.0.0.1:4443",
 		"maxSpotlights" : 1
+	},
+	"rtpengine": {
+		"host"       : "127.0.0.1",
+		"port"       : 2223,
+		"localport" : 2224
 	}
 }
