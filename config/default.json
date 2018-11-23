@@ -5,18 +5,10 @@
 		"secret" : "cymru"
 	},
 	"Kurento": {
-		"uri": "ws://127.0.0.1:8888/kurento"
+		"uri"             : "ws://127.0.0.1:8888/kurento",
+		"waitingVideoUrl" : "file:///usr/share/kurento/waiting.mp4"
 	},
 	"Mediasoup": {
-		"turnServers": [
-			{
-				"urls" : [
-					"turn:turn.example.com:443?transport=tcp"
-				],
-				"username"   : "example",
-				"credential" : "example"
-			}
-		],
 		"requestTimeout"   : 10000,
 		"transportOptions" :
 		{
