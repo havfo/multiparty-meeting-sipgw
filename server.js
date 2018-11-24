@@ -6,20 +6,15 @@ process.title = 'multiparty-meeting-sipgw';
 
 const config = require('config');
 const Srf = require('drachtio-srf');
-// const RtpEngine = require('rtpengine-client').Client;
 const Logger = require('./lib/Logger');
 const Room = require('./lib/Room');
 
-const srfConfig = config.get('Srf');
-// const rtpEngineConfig = config.get('rtpengine');
+const srfConfig = config.get('Drachtio');
 
 const logger = new Logger();
 
 // Drachtio connection
 const srf = new Srf();
-
-// RtpEngine connection
-const rtpEngine = null; // new RtpEngine(rtpEngineConfig.localport);
 
 srf.connect(srfConfig);
 
@@ -31,6 +26,11 @@ srf.on('connect', (err, hostport) =>
 	{
 		logger.error('Error connecting to drachtio server: %s', err);
 	});
+
+srf.options((req, res) =>
+{
+	res.send(200);
+});
 
 srf.invite((req, res) =>
 {
@@ -46,7 +46,7 @@ srf.invite((req, res) =>
 				logger.info(
 					'invite request [roomName:"%s"]', roomName);
 
-				const room = new Room(roomName, srf, rtpEngine);
+				const room = new Room(roomName, srf);
 
 				room.on('close', () =>
 				{
