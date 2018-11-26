@@ -6,7 +6,8 @@
 	},
 	"Kurento": {
 		"uri"             : "ws://127.0.0.1:8888/kurento",
-		"waitingVideoUrl" : "file:///usr/share/kurento/waiting.mp4"
+		"waitingVideoUrl" : "file:///usr/share/kurento/waiting.mp4",
+		"notificationUrl" : "file:///usr/share/kurento/notify.mp3"
 	},
 	"Mediasoup": {
 		"requestTimeout"   : 10000,

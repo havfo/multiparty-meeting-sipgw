@@ -8,10 +8,14 @@ const config = require('config');
 const Srf = require('drachtio-srf');
 const Logger = require('./lib/Logger');
 const Room = require('./lib/Room');
+const kurento = require('kurento-client');
 
+const kurentoConfig = config.get('Kurento');
 const srfConfig = config.get('Drachtio');
 
 const logger = new Logger();
+
+let _kurentoClient = null;
 
 // Drachtio connection
 const srf = new Srf();
@@ -32,39 +36,71 @@ srf.options((req, res) =>
 	res.send(200);
 });
 
-srf.invite((req, res) =>
+srf.invite(async (req, res) =>
 {
-	Promise.resolve()
-		.then(() =>
+	const kurentoClient = await _getKurentoClient();
+
+	try
+	{
+		const roomUri = req.getParsedHeader('to').uri.match(/sip:(.*?)@(.*?)$/);
+
+		const roomName = roomUri[1];
+
+		if (roomName)
 		{
-			const roomUri = req.getParsedHeader('to').uri.match(/sip:(.*?)@(.*?)$/);
+			logger.info(
+				'invite request [roomName:"%s"]', roomName);
 
-			const roomName = roomUri[1];
+			const room = new Room(roomName, srf, kurentoClient);
 
-			if (roomName)
+			room.on('close', () =>
 			{
-				logger.info(
-					'invite request [roomName:"%s"]', roomName);
+				logger.debug(
+					'close() [roomName:"%s"]', roomName);
+			});
 
-				const room = new Room(roomName, srf);
-
-				room.on('close', () =>
-				{
-					logger.debug(
-						'close() [roomName:"%s"]', roomName);
-				});
-
-				room.handleCall(req, res);
-			}
-			else
-			{
-				res.send(400);
-			}
-		})
-		.catch((error) =>
+			await room.handleCall(req, res);
+		}
+		else
 		{
-			logger.error('Error on invite: %s', error);
+			res.send(400);
+		}
+	}
+	catch (error)
+	{
+		logger.error('Error on invite: %s', error);
 
-			res.send(500);
-		});
+		res.send(500);
+	}
 });
+
+async function _getKurentoClient()
+{
+	logger.debug('_getKurentoClient()');
+
+	return new Promise((resolve, reject) =>
+	{
+		if (_kurentoClient !== null)
+		{
+			logger.info('_getKurentoClient | KurentoClient already created');
+
+			return resolve(_kurentoClient);
+		}
+
+		kurento(kurentoConfig.uri, (error, kurentoClient) =>
+		{
+			if (error)
+			{
+				logger.error(error);
+
+				return reject(error);
+			}
+
+			logger.info(`_getKurentoClient | created KurentoClient, connected to: ${kurentoConfig.uri}`);
+
+			_kurentoClient = kurentoClient;
+
+			return resolve(_kurentoClient);
+		});
+	});
+}
