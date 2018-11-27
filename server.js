@@ -46,12 +46,20 @@ srf.invite(async (req, res) =>
 
 		const roomName = roomUri[1];
 
+		const fromHeader = req.get('from').match(/"(.+?)" <sip:.*>|<sip:(.*?)>/);
+
+		let displayName;
+		if (fromHeader[1])
+			displayName = fromHeader[1];
+		else
+			displayName = fromHeader[2];
+
 		if (roomName)
 		{
 			logger.info(
 				'invite request [roomName:"%s"]', roomName);
 
-			const room = new Room(roomName, srf, kurentoClient);
+			const room = new Room(roomName, srf, kurentoClient, displayName);
 
 			room.on('close', () =>
 			{
