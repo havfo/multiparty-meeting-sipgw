@@ -36,50 +36,50 @@ srf.options((req, res) =>
 	res.send(200);
 });
 
-srf.invite(async (req, res) =>
+srf.invite((req, res) =>
 {
-	const kurentoClient = await _getKurentoClient();
-
-	try
-	{
-		const roomUri = req.getParsedHeader('to').uri.match(/sip:(.*?)@(.*?)$/);
-
-		const roomName = roomUri[1];
-
-		const fromHeader = req.get('from').match(/"(.+?)" <sip:.*>|<sip:(.*?)>/);
-
-		let displayName;
-		if (fromHeader[1])
-			displayName = fromHeader[1];
-		else
-			displayName = fromHeader[2];
-
-		if (roomName)
+	_getKurentoClient()
+		.then((kurentoClient) =>
 		{
-			logger.info(
-				'invite request [roomName:"%s"]', roomName);
+			const roomUri = req.getParsedHeader('to').uri.match(/sip:(.*?)@(.*?)$/);
 
-			const room = new Room(roomName, srf, kurentoClient, displayName);
+			const roomName = roomUri[1];
 
-			room.on('close', () =>
+			const fromHeader = req.get('from').match(/"(.+?)" <sip:.*>|<sip:(.*?)>/);
+
+			let displayName;
+
+			if (fromHeader[1])
+				displayName = fromHeader[1];
+			else
+				displayName = fromHeader[2];
+
+			if (roomName)
 			{
-				logger.debug(
-					'close() [roomName:"%s"]', roomName);
-			});
+				logger.info(
+					'invite request [roomName:"%s"]', roomName);
 
-			await room.handleCall(req, res);
-		}
-		else
+				const room = new Room(roomName, srf, kurentoClient, displayName);
+
+				room.on('close', () =>
+				{
+					logger.debug(
+						'close() [roomName:"%s"]', roomName);
+				});
+
+				room.handleCall(req, res);
+			}
+			else
+			{
+				res.send(400);
+			}
+		})
+		.catch((error) =>
 		{
-			res.send(400);
-		}
-	}
-	catch (error)
-	{
-		logger.error('Error on invite: %s', error);
+			logger.error('Error on invite: %s', error);
 
-		res.send(500);
-	}
+			res.send(500);
+		});
 });
 
 async function _getKurentoClient()
