@@ -17,7 +17,6 @@
 		}
 	},
 	"Room": {
-		"socketUrl"     : "https://127.0.0.1:4443",
-		"maxSpotlights" : 1
+		"socketUrl"     : "https://127.0.0.1:4443"
 	}
 }
